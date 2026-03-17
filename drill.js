@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const subject = localStorage.getItem("brother_subject") || "";
+  const questionType = localStorage.getItem("brother_question_type") || "general";
   const focus = localStorage.getItem("brother_fix") || localStorage.getItem("brother_biggest_leak") || "";
-  const drills = JSON.parse(localStorage.getItem("brother_drills") || "[]");
+  const drillMeta = JSON.parse(localStorage.getItem("brother_drill_meta") || "null");
 
   const subjectLabel = document.getElementById("subjectLabel");
   const focusLabel = document.getElementById("focusLabel");
-  const drillText = document.getElementById("drillText");
+  const taskTitle = document.getElementById("taskTitle");
+  const taskQuestion = document.getElementById("taskQuestion");
+  const mustIncludeList = document.getElementById("mustIncludeList");
+  const starterBox = document.getElementById("starterBox");
+  const modelBox = document.getElementById("modelBox");
   const drillInput = document.getElementById("drillInput");
   const submitBtn = document.getElementById("submitDrillBtn");
   const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -13,7 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   subjectLabel.textContent = niceSubject(subject);
   focusLabel.textContent = focus || "General improvement";
-  drillText.textContent = drills[0] || "Do one short focused drill on your weakest area.";
+
+  const meta = drillMeta || {
+    title: "Targeted repair drill",
+    question: "Write a short exam-style answer.",
+    must_include: ["one clear point", "one support"],
+    starter: ["Point:", "Reason:"],
+    model: "One clear point with one reason."
+  };
+
+  taskTitle.textContent = meta.title || "Targeted repair drill";
+  taskQuestion.textContent = meta.question || "Write a short exam-style answer.";
+  mustIncludeList.innerHTML = (meta.must_include || [])
+    .map(x => `<li>${escapeHtml(String(x))}</li>`)
+    .join("");
+  starterBox.textContent = Array.isArray(meta.starter) ? meta.starter.join("  |  ") : "";
+  modelBox.textContent = meta.model || "";
 
   tryAgainBtn.addEventListener("click", () => {
     drillInput.value = "";
@@ -32,8 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await window.coachRequest({
         mode: "drill_coach",
         subject,
+        question_type: questionType,
         focus,
-        drill: drillText.textContent,
+        drill: meta.title + " :: " + meta.question,
         answer
       });
 
@@ -57,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="resultBlock">
-          <strong>Scaffold</strong><br>
+          <strong>Scaffold for retry</strong><br>
           ${escapeHtml(result.scaffold || "—")}
         </div>
 
