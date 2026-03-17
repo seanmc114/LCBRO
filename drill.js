@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const taskQuestion = document.getElementById("taskQuestion");
   const mustIncludeList = document.getElementById("mustIncludeList");
   const starterBox = document.getElementById("starterBox");
-  const modelBox = document.getElementById("modelBox");
   const drillInput = document.getElementById("drillInput");
   const submitBtn = document.getElementById("submitDrillBtn");
   const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -23,8 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     title: "Targeted repair drill",
     question: "Write a short exam-style answer.",
     must_include: ["one clear point", "one support"],
-    starter: ["Point:", "Reason:"],
-    model: "One clear point with one reason."
+    starter: ["Point:", "Reason:"]
   };
 
   taskTitle.textContent = meta.title || "Targeted repair drill";
@@ -33,7 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .map(x => `<li>${escapeHtml(String(x))}</li>`)
     .join("");
   starterBox.textContent = Array.isArray(meta.starter) ? meta.starter.join("  |  ") : "";
-  modelBox.textContent = meta.model || "";
+
+  drillInput.addEventListener("paste", (e) => {
+    e.preventDefault();
+  });
 
   tryAgainBtn.addEventListener("click", () => {
     drillInput.value = "";
