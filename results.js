@@ -160,7 +160,23 @@ Written Expression 36/60`
             ${escapeHtml(result.next_data_request)}
           </div>
         ` : ""}
+
+        <div class="controls" style="margin-top:16px;">
+          <button id="startDrillBtn" class="goldBtn" type="button">Start Drill</button>
+        </div>
       `;
+
+      localStorage.setItem("brother_subject", currentSubject);
+      localStorage.setItem("brother_fix", result.fix_first || "");
+      localStorage.setItem("brother_biggest_leak", result.biggest_leak || "");
+      localStorage.setItem("brother_drills", JSON.stringify(drills));
+
+      const startBtn = document.getElementById("startDrillBtn");
+      if (startBtn) {
+        startBtn.addEventListener("click", () => {
+          window.location.href = "drill.html";
+        });
+      }
 
       saveProgress(raw);
       drawGraph();
@@ -168,7 +184,7 @@ Written Expression 36/60`
       outEl.innerHTML = `
         <h2 style="margin-top:0;">THE BROTHER</h2>
         <p>Something went wrong while analysing those results.</p>
-        <p class="tiny">Check that ai.js has the correct worker URL and that the worker is deployed.</p>
+        <p class="tiny">${escapeHtml(err.message || String(err))}</p>
       `;
       console.error(err);
     }
@@ -239,21 +255,11 @@ Written Expression 36/60`
 
     chart = new Chart(chartCanvas, {
       type: "line",
-      data: {
-        labels,
-        datasets
-      },
+      data: { labels, datasets },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: true }
-        },
-        scales: {
-          y: {
-            min: 0,
-            max: 100
-          }
-        }
+        plugins: { legend: { display: true } },
+        scales: { y: { min: 0, max: 100 } }
       }
     });
   }
