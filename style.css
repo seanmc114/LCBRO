@@ -16,7 +16,7 @@ body{
 }
 
 .wrap{
-  max-width:900px;
+  max-width:980px;
   width:92%;
   margin:40px auto;
 }
@@ -45,6 +45,7 @@ footer{
   justify-content:space-between;
   align-items:center;
   margin-bottom:10px;
+  gap:12px;
 }
 
 .pill{
@@ -90,6 +91,16 @@ textarea{
   border:none;
   font-size:16px;
   margin-top:12px;
+  box-sizing:border-box;
+}
+
+select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+  margin-top:8px;
   box-sizing:border-box;
 }
 
@@ -188,4 +199,33 @@ canvas{
   background:white;
   border-radius:12px;
   padding:10px;
+}
+
+.rowSplit{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.fieldBlock{
+  min-width:0;
+}
+
+.mustList{
+  margin:10px 0 0 18px;
+  padding:0;
+}
+
+.improvementBanner{
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  background:rgba(255,210,63,.18);
+  font-weight:800;
+}
+
+.caoBig{
+  font-size:36px;
+  font-weight:900;
+  margin-top:8px;
 }
