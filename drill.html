@@ -9,20 +9,32 @@
 <body>
 
 <main class="wrap">
-
   <div class="topBar">
     <button onclick="location.href='results.html'" class="ghost">← Back</button>
     <div class="pill">THE BROTHER · Drill Coach</div>
   </div>
 
   <h1>THE BROTHER</h1>
-  <p class="sub">Let’s fix the leak now.</p>
+  <p class="sub">Let’s fix the leak properly now.</p>
 
   <div class="card">
     <div><strong>Subject:</strong> <span id="subjectLabel"></span></div>
     <div style="margin-top:10px;"><strong>Focus:</strong> <span id="focusLabel"></span></div>
-    <div style="margin-top:10px;"><strong>Drill:</strong></div>
-    <div id="drillText" class="exampleBox"></div>
+    <div style="margin-top:10px;"><strong>Task title:</strong> <span id="taskTitle"></span></div>
+  </div>
+
+  <div class="card">
+    <div><strong>Question</strong></div>
+    <div id="taskQuestion" class="exampleBox"></div>
+
+    <div style="margin-top:14px;"><strong>Must include</strong></div>
+    <ul id="mustIncludeList" class="mustList"></ul>
+
+    <div style="margin-top:14px;"><strong>Starter</strong></div>
+    <div id="starterBox" class="exampleBox"></div>
+
+    <div style="margin-top:14px;"><strong>Model</strong></div>
+    <div id="modelBox" class="exampleBox"></div>
   </div>
 
   <div class="card">
@@ -35,7 +47,6 @@
   </div>
 
   <section id="drillOut" class="card hidden"></section>
-
 </main>
 
 <footer>
