@@ -1,4 +1,4 @@
-const WORKER_BASE = "https://shy-morning-692c.seansynge.workers.dev/;
+const WORKER_BASE = "const WORKER_BASE = "https://shy-morning-692c.seansynge.workers.dev/";
 
 async function coachRequest(payload) {
   const res = await fetch(WORKER_BASE + "/", {
@@ -9,33 +9,41 @@ async function coachRequest(payload) {
     body: JSON.stringify(payload)
   });
 
+  const text = await res.text();
+
   if (!res.ok) {
-    throw new Error("Worker request failed");
+    throw new Error("Worker error: " + res.status + " " + text);
   }
 
-  return await res.json();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error("Worker returned non-JSON: " + text);
+  }
 }
 
-async function classifyAnswer(payload) {
-  return await coachRequest(payload);
-}
+window.coachRequest = coachRequest;";
 
-async function transcribeAudio(blob) {
-  const fd = new FormData();
-  fd.append("audio", blob, "speech.webm");
-
-  const res = await fetch(WORKER_BASE + "/transcribe", {
+async function coachRequest(payload) {
+  const res = await fetch(WORKER_BASE + "/", {
     method: "POST",
-    body: fd
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
   });
 
+  const text = await res.text();
+
   if (!res.ok) {
-    throw new Error("Transcription failed");
+    throw new Error("Worker error: " + res.status + " " + text);
   }
 
-  return await res.json();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error("Worker returned non-JSON: " + text);
+  }
 }
 
-window.classifyAnswer = classifyAnswer;
-window.transcribeAudio = transcribeAudio;
 window.coachRequest = coachRequest;
