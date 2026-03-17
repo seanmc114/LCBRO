@@ -1,4 +1,4 @@
-const WORKER_BASE = "const WORKER_BASE = "https://shy-morning-692c.seansynge.workers.dev/";
+const WORKER_BASE = "https://shy-morning-692c.seansynge.workers.dev/";
 
 async function coachRequest(payload) {
   const res = await fetch(WORKER_BASE + "/", {
