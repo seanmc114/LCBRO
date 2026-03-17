@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleCaoBtn = document.getElementById("toggleCaoBtn");
   const caoPanel = document.getElementById("caoPanel");
   const caoTotal = document.getElementById("caoTotal");
-  const caoNote = document.getElementById("caoNote");
   const caoBreakdown = document.getElementById("caoBreakdown");
 
   let currentSubject = null;
@@ -41,62 +40,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const QUESTION_TYPES = {
     english_hl: [
-      { value: "general", label: "General" },
-      { value: "macbeth", label: "Macbeth" },
-      { value: "comparative", label: "Comparative" },
-      { value: "poetry", label: "Poetry" },
-      { value: "comprehension", label: "Comprehension" },
-      { value: "composition", label: "Composition" }
+      ["general", "General"],
+      ["macbeth", "Macbeth"],
+      ["comparative", "Comparative"],
+      ["poetry", "Poetry"],
+      ["comprehension", "Comprehension"],
+      ["composition", "Composition"]
     ],
     irish_hl: [
-      { value: "general", label: "General" },
-      { value: "oral", label: "Oral" },
-      { value: "ceapadoireacht", label: "Ceapadóireacht" },
-      { value: "leamhthuiscint", label: "Léamhthuiscint" },
-      { value: "cluastuiscint", label: "Cluastuiscint" },
-      { value: "pros", label: "Prós" },
-      { value: "filiocht", label: "Filíocht" }
+      ["general", "General"],
+      ["oral", "Oral"],
+      ["ceapadoireacht", "Ceapadóireacht"],
+      ["leamhthuiscint", "Léamhthuiscint"],
+      ["cluastuiscint", "Cluastuiscint"],
+      ["pros", "Prós"],
+      ["filiocht", "Filíocht"]
     ],
     maths_ol: [
-      { value: "general", label: "General" },
-      { value: "algebra", label: "Algebra" },
-      { value: "financial_maths", label: "Financial Maths" },
-      { value: "geometry", label: "Geometry" },
-      { value: "trigonometry", label: "Trigonometry" },
-      { value: "statistics", label: "Statistics / Probability" }
+      ["general", "General"],
+      ["algebra", "Algebra"],
+      ["financial_maths", "Financial Maths"],
+      ["geometry", "Geometry"],
+      ["trigonometry", "Trigonometry"],
+      ["statistics", "Statistics / Probability"]
     ],
     pe_hl: [
-      { value: "general", label: "General" },
-      { value: "short_questions", label: "Short Questions" },
-      { value: "physiology", label: "Physiology" },
-      { value: "skill_acquisition", label: "Skill Acquisition" },
-      { value: "sociology", label: "Sociology of Sport" },
-      { value: "project", label: "Project" }
+      ["general", "General"],
+      ["short_questions", "Short Questions"],
+      ["physiology", "Physiology"],
+      ["skill_acquisition", "Skill Acquisition"],
+      ["sociology", "Sociology of Sport"],
+      ["project", "Project"]
     ],
     biology_hl: [
-      { value: "general", label: "General" },
-      { value: "definitions", label: "Definitions / Keywords" },
-      { value: "respiration", label: "Respiration" },
-      { value: "genetics", label: "Genetics" },
-      { value: "ecology", label: "Ecology" },
-      { value: "experiments", label: "Mandatory Experiments" }
+      ["general", "General"],
+      ["definitions", "Definitions / Keywords"],
+      ["respiration", "Respiration"],
+      ["genetics", "Genetics"],
+      ["ecology", "Ecology"],
+      ["experiments", "Mandatory Experiments"]
     ],
     homeec_hl: [
-      { value: "general", label: "General" },
-      { value: "short_answers", label: "Short Answers" },
-      { value: "core", label: "Core Long Answer" },
-      { value: "elective_nutrition", label: "Elective: Nutrition" },
-      { value: "elective_resource", label: "Elective: Resource Management" },
-      { value: "elective_social", label: "Elective: Social Studies" }
+      ["general", "General"],
+      ["short_answers", "Short Answers"],
+      ["core", "Core Long Answer"],
+      ["elective_nutrition", "Elective: Nutrition"],
+      ["elective_resource", "Elective: Resource Management"],
+      ["elective_social", "Elective: Social Studies"]
     ],
     spanish_ol: [
-      { value: "general", label: "General" },
-      { value: "oral", label: "Oral" },
-      { value: "aural", label: "Aural" },
-      { value: "reading", label: "Reading" },
-      { value: "written_email", label: "Written: Email / Message" },
-      { value: "written_opinion", label: "Written: Opinion Paragraph" },
-      { value: "written_accuracy", label: "Written: Accuracy / Grammar" }
+      ["general", "General"],
+      ["oral", "Oral"],
+      ["aural", "Aural"],
+      ["reading", "Reading"],
+      ["written_email", "Written: Email / Message"],
+      ["written_opinion", "Written: Opinion Paragraph"],
+      ["written_accuracy", "Written: Accuracy / Grammar"]
     ]
   };
 
@@ -156,6 +155,16 @@ Written Opinion 8/20
 Written Accuracy 12/20`
   };
 
+  function buildQuestionTypeOptions(subject) {
+    const list = QUESTION_TYPES[subject] || [["general", "General"]];
+    questionTypeSelect.innerHTML = list
+      .map(([value, label]) => `<option value="${value}">${label}</option>`)
+      .join("");
+
+    questionTypeHelp.textContent =
+      "Optional. Use this only if you already know the weaker question family. The coach still identifies the weakest area from the marks.";
+  }
+
   subjectBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       subjectBtns.forEach(b => b.classList.remove("active"));
@@ -165,6 +174,8 @@ Written Accuracy 12/20`
       buildQuestionTypeOptions(currentSubject);
     });
   });
+
+  buildQuestionTypeOptions("english_hl");
 
   useExampleBtn.addEventListener("click", () => {
     if (currentSubject) inputEl.value = EXAMPLES[currentSubject];
@@ -214,12 +225,9 @@ Written Accuracy 12/20`
 
       outEl.innerHTML = `
         <h2 style="margin-top:0;">THE BROTHER</h2>
-
         <p>${escapeHtml(result.message || "Hi Tom. All good?")}</p>
 
-        ${improvementLine ? `
-          <div class="improvementBanner">${escapeHtml(improvementLine)}</div>
-        ` : ""}
+        ${improvementLine ? `<div class="improvementBanner">${escapeHtml(improvementLine)}</div>` : ""}
 
         <div class="resultBlock">
           <strong>Biggest points leak</strong><br>
@@ -290,18 +298,6 @@ Written Accuracy 12/20`
     }
   });
 
-  function buildQuestionTypeOptions(subject) {
-    const list = QUESTION_TYPES[subject] || [{ value: "general", label: "General" }];
-    questionTypeSelect.innerHTML = list
-      .map(item => `<option value="${item.value}">${item.label}</option>`)
-      .join("");
-
-    questionTypeHelp.textContent =
-      subject === "spanish_ol"
-        ? "Spanish gets much better if you choose the weak question type: oral, aural, reading, email, opinion, or accuracy."
-        : "Pick the weak question family if you know it. Otherwise leave it on General.";
-  }
-
   function saveProgress(text) {
     const percent = extractScore(text);
     if (percent === null || !currentSubject) return;
@@ -349,7 +345,6 @@ Written Accuracy 12/20`
       : null;
 
     if (!prev) return "";
-
     if (percent > prev.score) {
       return `${subjectLabels[subject]} improved ${prev.score}% → ${percent}%`;
     }
@@ -388,9 +383,7 @@ Written Accuracy 12/20`
       options: {
         responsive: true,
         plugins: { legend: { display: true } },
-        scales: {
-          y: { min: 0, max: 100 }
-        }
+        scales: { y: { min: 0, max: 100 } }
       }
     });
   }
@@ -410,21 +403,12 @@ Written Accuracy 12/20`
       return { sub, pct, points };
     });
 
-    const bestSix = entries
-      .sort((a, b) => b.points - a.points)
-      .slice(0, 6);
-
+    const bestSix = entries.sort((a, b) => b.points - a.points).slice(0, 6);
     const total = bestSix.reduce((sum, x) => sum + x.points, 0);
 
     caoTotal.textContent = total ? `${total} pts` : "—";
-    caoNote.textContent = "Uses latest stored percentage for each subject on this device. Approximate only.";
-
     caoBreakdown.innerHTML = bestSix.length
-      ? bestSix.map(x => `
-          <div style="margin-top:8px;">
-            <strong>${subjectLabels[x.sub] || x.sub}</strong> — ${x.pct}% ≈ ${x.points} pts
-          </div>
-        `).join("")
+      ? bestSix.map(x => `<div style="margin-top:8px;"><strong>${subjectLabels[x.sub]}</strong> — ${x.pct}% ≈ ${x.points} pts</div>`).join("")
       : `<div class="tiny">No stored results yet.</div>`;
   }
 
@@ -461,5 +445,4 @@ Written Accuracy 12/20`
   }
 
   drawGraph();
-  if (showCao) drawCaoProjection();
 });
