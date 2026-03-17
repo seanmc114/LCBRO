@@ -162,7 +162,7 @@ Written Accuracy 12/20`
       .join("");
 
     questionTypeHelp.textContent =
-      "Optional. Use this only if you already know the weaker question family. The coach still identifies the weakest area from the marks.";
+      "Optional. Use this only if you already know the weak question family. The coach still identifies the weakest area from the marks.";
   }
 
   subjectBtns.forEach(btn => {
