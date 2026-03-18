@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>THE BROTHER — Drill Coach</title>
+  <title>THE BROTHER — Gym</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -11,15 +11,16 @@
 <main class="wrap">
   <div class="topBar">
     <button onclick="location.href='results.html'" class="ghost">← Back</button>
-    <div class="pill">THE BROTHER · Drill Coach</div>
+    <div class="pill">THE BROTHER · Gym</div>
   </div>
 
   <h1>THE BROTHER</h1>
-  <p class="sub">Let’s fix the leak properly now.</p>
+  <p class="sub">One drill at a time. Tight. Focused. Useful.</p>
 
   <div class="card">
     <div><strong>Subject:</strong> <span id="subjectLabel"></span></div>
     <div style="margin-top:10px;"><strong>Focus:</strong> <span id="focusLabel"></span></div>
+    <div style="margin-top:10px;"><strong>Drill:</strong> <span id="drillCounter"></span></div>
     <div style="margin-top:10px;"><strong>Task title:</strong> <span id="taskTitle"></span></div>
   </div>
 
@@ -44,10 +45,13 @@
     <div class="controls">
       <button id="submitDrillBtn" class="goldBtn" type="button">Submit Drill</button>
       <button id="tryAgainBtn" class="ghost" type="button">Try Again</button>
+      <button id="nextDrillBtn" class="tealBtn hidden" type="button">Next Drill</button>
+      <button id="finishGymBtn" class="tealBtn hidden" type="button">Finish Gym</button>
     </div>
   </div>
 
   <section id="drillOut" class="card hidden"></section>
+  <section id="gymSummary" class="card hidden"></section>
 </main>
 
 <footer>
