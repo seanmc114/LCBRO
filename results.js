@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const caoPanel = document.getElementById("caoPanel");
   const caoTotal = document.getElementById("caoTotal");
   const caoBreakdown = document.getElementById("caoBreakdown");
+  const currentPicture = document.getElementById("currentPicture");
 
   let currentSubject = null;
   let chart = null;
@@ -279,8 +280,9 @@ Written Accuracy 12/20`
         });
       }
 
-      saveExamProgress(raw);
+      saveExamProgress(raw, result);
       drawGraph();
+      drawCurrentPicture();
       if (showCao) drawCaoProjection();
     } catch (err) {
       outEl.innerHTML = `
@@ -292,7 +294,7 @@ Written Accuracy 12/20`
     }
   });
 
-  function saveExamProgress(text) {
+  function saveExamProgress(text, result) {
     const percent = extractScore(text);
     if (percent === null || !currentSubject) return;
 
@@ -306,11 +308,22 @@ Written Accuracy 12/20`
 
     history[currentSubject].push({
       score: percent,
+      weighted_score: percent,
       date: dateLabel,
       source: "exam"
     });
 
     localStorage.setItem("lc_progress", JSON.stringify(history));
+
+    const leaks = JSON.parse(localStorage.getItem("lc_leaks") || "{}");
+    if (!Array.isArray(leaks[currentSubject])) leaks[currentSubject] = [];
+    leaks[currentSubject].push({
+      date: dateLabel,
+      category: (result && result.drill_meta && result.drill_meta.leak_category) || questionTypeSelect.value || "general",
+      detail: (result && result.biggest_leak) || "Biggest leak from exam input",
+      source: "exam"
+    });
+    localStorage.setItem("lc_leaks", JSON.stringify(leaks));
   }
 
   function extractScore(text) {
@@ -430,6 +443,39 @@ Written Accuracy 12/20`
     return 0;
   }
 
+  function drawCurrentPicture() {
+    const progress = JSON.parse(localStorage.getItem("lc_progress") || "{}");
+    const leaks = JSON.parse(localStorage.getItem("lc_leaks") || "{}");
+
+    const subjects = Object.keys(progress);
+    if (!subjects.length) {
+      currentPicture.innerHTML = `<div class="tiny">No stored picture yet.</div>`;
+      return;
+    }
+
+    const blocks = subjects.map(sub => {
+      const entries = Array.isArray(progress[sub]) ? progress[sub] : [];
+      if (!entries.length) return "";
+      const weightedAvg = Math.round(entries.reduce((sum, e) => sum + Number(e.weighted_score ?? e.score ?? 0), 0) / entries.length);
+      const latest = entries[entries.length - 1];
+      const leakEntries = Array.isArray(leaks[sub]) ? leaks[sub] : [];
+      const topLeak = mostCommonLeak(leakEntries);
+      return `<div class="pictureRow"><strong>${escapeHtml(subjectLabels[sub] || sub)}</strong><span>Blended picture: ${weightedAvg}% · Latest: ${escapeHtml(String(latest.score))}% · Recurring leak: ${escapeHtml(topLeak)}</span></div>`;
+    }).join("");
+
+    currentPicture.innerHTML = blocks || `<div class="tiny">No stored picture yet.</div>`;
+  }
+
+  function mostCommonLeak(entries) {
+    if (!entries.length) return "Not enough data yet";
+    const counts = {};
+    entries.forEach(e => {
+      const key = String(e.category || e.detail || "general");
+      counts[key] = (counts[key] || 0) + 1;
+    });
+    return Object.entries(counts).sort((a,b) => b[1] - a[1])[0][0];
+  }
+
   function escapeHtml(s) {
     return String(s)
       .replaceAll("&", "&amp;")
@@ -440,4 +486,5 @@ Written Accuracy 12/20`
   }
 
   drawGraph();
+  drawCurrentPicture();
 });

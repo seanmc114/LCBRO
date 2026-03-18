@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>THE BROTHER — Practice Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<main class="wrap">
+  <div class="topBar">
+    <button onclick="location.href='index.html'" class="ghost">← Back</button>
+    <div class="pill">THE BROTHER · Practice Mode</div>
+  </div>
+
+  <h1>THE BROTHER</h1>
+  <p class="sub">
+    Short. Authentic. Marked fast. The mechanics first.
+  </p>
+
+  <div class="subjectGrid">
+    <button class="subjectBtn english" data-subject="english_hl">English HL</button>
+    <button class="subjectBtn irish" data-subject="irish_hl">Irish HL</button>
+    <button class="subjectBtn maths" data-subject="maths_ol">Maths OL</button>
+    <button class="subjectBtn pe" data-subject="pe_hl">PE HL</button>
+    <button class="subjectBtn biology" data-subject="biology_hl">Biology HL</button>
+    <button class="subjectBtn homeec" data-subject="homeec_hl">Home Ec HL</button>
+    <button class="subjectBtn spanish" data-subject="spanish_ol">Spanish OL</button>
+  </div>
+
+  <div class="card">
+    <div class="rowSplit">
+      <div class="fieldBlock">
+        <label for="practiceTypeSelect"><strong>Practice family</strong></label>
+        <select id="practiceTypeSelect"></select>
+        <div class="tiny" id="practiceTypeHelp">
+          Focus on the mechanics: definitions, formulae, quotes, short structured answers, keyword knowledge.
+        </div>
+      </div>
+
+      <div class="fieldBlock">
+        <label for="difficultySelect"><strong>Difficulty</strong></label>
+        <select id="difficultySelect">
+          <option value="foundation">Foundation</option>
+          <option value="standard" selected>Standard</option>
+          <option value="stretch">Stretch</option>
+        </select>
+        <div class="tiny">Standard is the default. Stretch adds a sharper twist.</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="generateBtn" class="goldBtn" type="button">Generate Question</button>
+      <button id="newVariantBtn" class="ghost" type="button">New Variant</button>
+    </div>
+  </div>
+
+  <section id="practiceCard" class="card hidden"></section>
+
+  <div class="card hidden" id="answerCard">
+    <strong>Your answer</strong>
+    <textarea id="practiceAnswer" placeholder="Type your answer here..."></textarea>
+    <div class="controls">
+      <button id="markBtn" class="goldBtn" type="button">Mark Answer</button>
+      <button id="clearAnswerBtn" class="ghost" type="button">Clear</button>
+    </div>
+  </div>
+
+  <section id="feedbackCard" class="card hidden"></section>
+
+  <section id="practiceHistoryCard" class="card">
+    <h3 style="margin-top:0;">Practice Feed</h3>
+    <div class="tiny">Recent short-question attempts on this device. These feed the wider picture with a lighter weight than full exam inputs.</div>
+    <div id="practiceHistory" class="resultBlock"></div>
+  </section>
+</main>
+
+<footer>
+  © Synge Street Games Lab 2026
+</footer>
+
+<script src="ai.js"></script>
+<script src="practice.js"></script>
+
+</body>
+</html>
