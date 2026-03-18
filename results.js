@@ -231,17 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = JSON.parse(localStorage.getItem('lc_progress') || '{}');
     const leaks = JSON.parse(localStorage.getItem('lc_leaks') || '{}');
     const ids = selectedSubjects.map(s => s.id).filter(sub => Array.isArray(progress[sub]) && progress[sub].length);
-    if (!ids.length) {
-      currentPicture.innerHTML = `<div class="tiny">No stored picture yet.</div>`;
-      return;
-    }
+    if (!ids.length) { currentPicture.innerHTML = `<div class="tiny">No stored picture yet. Practice will build this over time.</div>`; return; }
     currentPicture.innerHTML = ids.map(sub => {
       const entries = progress[sub] || [];
       const weightedAvg = Math.round(entries.reduce((sum,e) => sum + Number(e.weighted_score ?? e.score ?? 0), 0) / entries.length);
       const latest = entries[entries.length - 1];
       const leakEntries = Array.isArray(leaks[sub]) ? leaks[sub] : [];
       const topLeak = mostCommonLeak(leakEntries);
-      return `<div class="pictureRow"><strong>${escapeHtml(window.getSubjectLabel(sub))}</strong><span>Blended picture: ${weightedAvg}% · Latest: ${escapeHtml(String(latest.score))}% · Recurring leak: ${escapeHtml(topLeak)}</span></div>`;
+      const entryCount = entries.length; const pictureText = entryCount < 2 ? `Not enough stored data yet` : `Blended picture: ${weightedAvg}% · Latest: ${escapeHtml(String(latest.score))}%`; const leakText = leakEntries.length < 2 ? 'Recurring leak: Not enough data yet' : `Recurring leak: ${escapeHtml(topLeak)}`; return `<div class="pictureRow"><strong>${escapeHtml(window.getSubjectLabel(sub))}</strong><span>${pictureText} · ${leakText}</span></div>`;
     }).join('');
   }
 

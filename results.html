@@ -8,85 +8,22 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
 <main class="wrap">
   <div class="topBar">
     <button onclick="location.href='index.html'" class="ghost">← Back</button>
     <div class="pill">THE BROTHER · Results Coach</div>
   </div>
-
   <h1>THE BROTHER</h1>
-  <p class="sub" id="resultsIntro">
-    Choose a subject, paste results, and THE BROTHER will identify the biggest points leak first.
-  </p>
-
+  <p class="sub" id="resultsIntro">Choose a subject, paste results, and THE BROTHER will identify the biggest points leak first.</p>
   <div id="subjectGrid" class="subjectGrid"></div>
-
-  <div class="card">
-    <div class="rowSplit">
-      <div class="fieldBlock">
-        <label for="questionTypeSelect"><strong>Optional topic / question type</strong></label>
-        <select id="questionTypeSelect"></select>
-        <div class="tiny" id="questionTypeHelp">
-          Optional. Use this only if you already know the weak question family.
-        </div>
-      </div>
-
-      <div class="fieldBlock">
-        <label><strong>Projected CAO</strong></label>
-        <div class="controls" style="margin-top:8px;">
-          <button id="toggleCaoBtn" class="tealBtn" type="button">Show CAO Projection</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <strong>Example format</strong>
-    <div class="tiny" style="margin-top:8px;">Paste one subject at a time. Use section names and scores like <strong>38/60</strong>.</div>
-    <pre id="exampleBox" class="exampleBox"></pre>
-    <div class="controls">
-      <button id="useExampleBtn" class="tealBtn" type="button">Use Example</button>
-      <button id="clearBtn" class="ghost" type="button">Clear</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <strong>Your results</strong>
-    <textarea id="resultsInput" placeholder="Choose a subject above first, then paste your results here."></textarea>
-    <div class="controls">
-      <button id="analyseBtn" class="goldBtn" type="button">Analyse Results</button>
-    </div>
-  </div>
-
+  <div class="card"><div class="rowSplit"><div class="fieldBlock"><label for="questionTypeSelect"><strong>Optional topic / question type</strong></label><select id="questionTypeSelect"></select><div class="tiny" id="questionTypeHelp">Optional. Use this only if you already know the weak question family.</div></div><div class="fieldBlock"><label><strong>Projected CAO</strong></label><div class="controls" style="margin-top:8px;"><button id="toggleCaoBtn" class="tealBtn" type="button">Show CAO Projection</button></div></div></div></div>
+  <div class="card"><strong>Example format</strong><div class="tiny" style="margin-top:8px;">Paste one subject at a time. Use section names and scores like <strong>38/60</strong>.</div><pre id="exampleBox" class="exampleBox"></pre><div class="controls"><button id="useExampleBtn" class="tealBtn" type="button">Use Example</button><button id="clearBtn" class="ghost" type="button">Clear</button></div></div>
+  <div class="card"><strong>Your results</strong><textarea id="resultsInput" placeholder="Choose a subject above first, then paste your results here."></textarea><div class="controls"><button id="analyseBtn" class="goldBtn" type="button">Analyse Results</button></div></div>
   <section id="resultsOut" class="card hidden"></section>
-
-  <div id="caoPanel" class="card hidden">
-    <h3 style="margin-top:0;">Projected CAO Points</h3>
-    <div class="caoBig" id="caoTotal">—</div>
-    <div class="tiny" id="caoNote">Uses latest stored percentage for each selected subject on this device.</div>
-    <div id="caoBreakdown" class="resultBlock"></div>
-  </div>
-
-  <div class="card">
-    <h3 style="margin-top:0;">Current picture</h3>
-    <div class="tiny">Exam results count fully. Practice attempts feed the picture too, but at a lighter weight.</div>
-    <div id="currentPicture" class="resultBlock"></div>
-  </div>
-
-  <div class="card">
-    <h3 style="margin-top:0;">Progress by Subject</h3>
-    <div class="tiny">Each entry is stored by date (dd/mm) on this device.</div>
-    <canvas id="progressChart"></canvas>
-  </div>
+  <div id="caoPanel" class="card hidden"><h3 style="margin-top:0;">Projected CAO Points</h3><div class="caoBig" id="caoTotal">—</div><div class="tiny" id="caoNote">Uses latest stored percentage for each selected subject on this device.</div><div id="caoBreakdown" class="resultBlock"></div></div>
+  <div class="card"><h3 style="margin-top:0;">Stored picture</h3><div class="tiny">Practice builds this picture over time. Results mainly confirm whether the picture is tracking reality.</div><div id="currentPicture" class="resultBlock"></div></div>
+  <div class="card"><h3 style="margin-top:0;">Progress by Subject</h3><div class="tiny">Each stored entry is dated on this device.</div><canvas id="progressChart"></canvas></div>
 </main>
-
-<footer>
-  © Synge Street Games Lab 2026
-</footer>
-
-<script src="subject-data.js"></script>
-<script src="ai.js"></script>
-<script src="results.js"></script>
-</body>
-</html>
+<footer>© Synge Street Games Lab 2026 — Imagination and Perseverance</footer>
+<script src="subject-data.js"></script><script src="ai.js"></script><script src="results.js"></script>
+</body></html>

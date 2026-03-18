@@ -7,18 +7,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
 <main class="wrap">
   <h1>THE BROTHER</h1>
-  <p class="sub">
-    A Leaving Cert study engine. Spot the biggest leak. Tighten the basics. Build the points picture over time.
-  </p>
+  <p class="sub">A Leaving Cert study engine. Spot the biggest leak. Tighten the basics. Build the points picture over time.</p>
 
   <section class="card" id="profileCard">
     <div class="rowSplit profileTop">
       <div>
         <strong>Learner setup</strong>
-        <div class="tiny" id="profileSummary">First visit: enter a name and choose subjects.</div>
+        <div class="tiny" id="profileSummary">First visit: enter a name, choose subjects and levels, then save.</div>
       </div>
       <div class="controls profileActions">
         <button id="editSetupBtn" class="ghost" type="button">Edit setup</button>
@@ -27,16 +24,37 @@
   </section>
 
   <section class="card hidden" id="setupCard">
-    <h3 style="margin-top:0;">First visit setup</h3>
+    <h3 style="margin-top:0;">Learner setup</h3>
     <div class="fieldBlock">
       <label for="learnerNameInput"><strong>Name</strong></label>
       <input id="learnerNameInput" type="text" placeholder="Enter learner name" />
     </div>
 
     <div class="fieldBlock" style="margin-top:16px;">
-      <strong>Choose subjects</strong>
-      <div class="tiny" style="margin-top:8px;">Nothing is preselected. Choose only the subjects being studied.</div>
+      <strong>Choose subjects and levels</strong>
+      <div class="tiny" style="margin-top:8px;">Choose these once, save them, then the app can focus on practice, errors and drills.</div>
       <div id="subjectChecklist" class="checkGrid"></div>
+    </div>
+
+    <div class="rowSplit" style="margin-top:18px;">
+      <div class="fieldBlock setupPanel">
+        <h4 style="margin:0 0 8px;">English setup</h4>
+        <div class="tiny">Only needed for option-based material.</div>
+        <input id="engSingleText" type="text" placeholder="Single text" />
+        <input id="engComp1" type="text" placeholder="Comparative text 1" />
+        <input id="engComp2" type="text" placeholder="Comparative text 2" />
+        <input id="engComp3" type="text" placeholder="Comparative text 3" />
+        <input id="engPoets" type="text" placeholder="Poets studied (comma separated)" />
+        <input id="engFocus" type="text" placeholder="Optional current focus" />
+      </div>
+      <div class="fieldBlock setupPanel">
+        <h4 style="margin:0 0 8px;">Irish setup</h4>
+        <div class="tiny">Only needed for option-based material.</div>
+        <input id="irlPros" type="text" placeholder="Prós" />
+        <input id="irlDrama" type="text" placeholder="Dráma" />
+        <input id="irlFiliocht" type="text" placeholder="Filíocht" />
+        <input id="irlFocus" type="text" placeholder="Optional current focus" />
+      </div>
     </div>
 
     <div class="controls">
@@ -46,49 +64,17 @@
   </section>
 
   <div class="menu twoColMenu">
-    <button onclick="location.href='results.html'" class="menuBtn goldBtn">
-      Results Coach
-    </button>
-    <button onclick="location.href='practice.html'" class="menuBtn tealBtn">
-      Practice Mode
-    </button>
+    <button onclick="location.href='practice.html'" class="menuBtn goldBtn">Practice Mode</button>
+    <button onclick="location.href='results.html'" class="menuBtn tealBtn">Results Coach</button>
   </div>
 
-  <div class="card">
+  <div class="card centeredCard">
     <strong>What this does</strong>
-    <p class="tiny" style="margin-top:10px;">
-      <strong>Results Coach</strong> reads pasted exam or class-test results, identifies the biggest points leak,
-      explains why it matters, and sends the student into a focused Gym block.
-    </p>
-    <p class="tiny" style="margin-top:10px;">
-      <strong>Practice Mode</strong> generates short authentic Leaving Cert style questions on mechanics:
-      formulae, definitions, quotes, keywords, short structured responses, grammar, and other small bits that leak marks.
-    </p>
-    <p class="tiny" style="margin-top:10px;">
-      Practice scores feed the running picture too, but with a lighter weight than full exam-result inputs.
-    </p>
+    <p class="tiny" style="margin-top:10px;"><strong>Practice Mode</strong> is the main engine: short authentic Leaving Cert style questions on mechanics, definitions, formulae, quotes, keywords, grammar and other small bits that leak marks.</p>
+    <p class="tiny" style="margin-top:10px;"><strong>Results Coach</strong> reads pasted exam or class-test results and checks whether the practice scoring and grade picture are tracking reality.</p>
   </div>
 </main>
-
-<footer>
-  © Synge Street Games Lab 2026
-</footer>
-
-<script src="subject-data.js"></script>
-<script src="script.js"></script>
-</body>
-</html>
-    </p>
-    <p class="tiny" style="margin-top:10px;">
-      Results are mainly there to <strong>confirm</strong> whether the practice scoring and grade picture are tracking reality.
-    </p>
-  </div>
-</main>
-
-<footer>
-  © Synge Street Games Lab 2026
-</footer>
-
+<footer>© Synge Street Games Lab 2026 — Imagination and Perseverance</footer>
 <script src="subject-data.js"></script>
 <script src="script.js"></script>
 </body>

@@ -55,52 +55,51 @@
     { id:'spanish_ol', label:'Spanish OL', color:'#FACC15' }
   ];
 
-  const EMPTY_PROFILE = { learnerName:'', selectedSubjects:[] };
+  const EMPTY_PROFILE = {
+    learnerName:'',
+    selectedSubjects:[],
+    english:{ singleText:'', comparativeTexts:[], poets:[], focus:'' },
+    irish:{ pros:'', drama:'', filiocht:'', focus:'' }
+  };
 
-  function unique(list){
-    return Array.from(new Set((Array.isArray(list) ? list : []).filter(Boolean)));
-  }
+  function unique(list){ return Array.from(new Set((Array.isArray(list) ? list : []).filter(Boolean))); }
 
   function normalizeProfile(raw){
-    const profile = raw && typeof raw === 'object' ? raw : {};
+    const p = raw && typeof raw === 'object' ? raw : {};
     return {
-      learnerName: String(profile.learnerName || '').trim(),
-      selectedSubjects: unique(profile.selectedSubjects)
+      learnerName: String(p.learnerName || '').trim(),
+      selectedSubjects: unique((p.selectedSubjects || []).map(x => String(x).trim())),
+      english: {
+        singleText: String(p.english?.singleText || '').trim(),
+        comparativeTexts: unique((p.english?.comparativeTexts || []).map(x => String(x).trim())),
+        poets: unique((p.english?.poets || []).map(x => String(x).trim())),
+        focus: String(p.english?.focus || '').trim()
+      },
+      irish: {
+        pros: String(p.irish?.pros || '').trim(),
+        drama: String(p.irish?.drama || '').trim(),
+        filiocht: String(p.irish?.filiocht || '').trim(),
+        focus: String(p.irish?.focus || '').trim()
+      }
     };
   }
 
   function getBrotherProfile(){
-    try {
-      return normalizeProfile(JSON.parse(localStorage.getItem('brother_profile') || 'null') || EMPTY_PROFILE);
-    } catch {
-      return { ...EMPTY_PROFILE };
-    }
+    try { return normalizeProfile(JSON.parse(localStorage.getItem('brother_profile') || 'null') || EMPTY_PROFILE); }
+    catch { return normalizeProfile(EMPTY_PROFILE); }
   }
-
   function saveBrotherProfile(profile){
     const clean = normalizeProfile(profile);
     localStorage.setItem('brother_profile', JSON.stringify(clean));
     return clean;
   }
-
-  function getSelectedSubjectIds(){
-    const ids = getBrotherProfile().selectedSubjects;
-    return ids.length ? ids : [];
-  }
-
+  function getSelectedSubjectIds(){ return getBrotherProfile().selectedSubjects; }
   function getSelectedSubjects(){
     const ids = getSelectedSubjectIds();
-    if (!ids.length) return SUBJECTS;
-    return SUBJECTS.filter(s => ids.includes(s.id));
+    return ids.length ? SUBJECTS.filter(s => ids.includes(s.id)) : SUBJECTS;
   }
-
-  function getSubjectLabel(id){
-    return (SUBJECTS.find(s => s.id === id) || {}).label || id || '—';
-  }
-
-  function getSubjectColor(id){
-    return (SUBJECTS.find(s => s.id === id) || {}).color || '#11b8ab';
-  }
+  function getSubjectLabel(id){ return (SUBJECTS.find(s => s.id === id) || {}).label || id || '—'; }
+  function getSubjectColor(id){ return (SUBJECTS.find(s => s.id === id) || {}).color || '#2fa39a'; }
 
   window.BROTHER_SUBJECTS = SUBJECTS;
   window.getBrotherProfile = getBrotherProfile;

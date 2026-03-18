@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function buildPracticeOptions(subject){
     const opts = PRACTICE_TYPES[subject] || [['general','General mechanics']];
     practiceTypeSelect.innerHTML = opts.map(([v,l]) => `<option value="${v}">${escapeHtml(l)}</option>`).join('');
-    practiceTypeHelp.textContent = 'Choose a short question family. Practice is the main engine here; results later confirm whether the picture is accurate.';
+    practiceTypeHelp.textContent = 'Choose the course area you want to practise. This is the day-to-day engine; results later confirm whether the picture is accurate.';
   }
 
   function getSavedCourseContext(subject){
