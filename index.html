@@ -11,8 +11,39 @@
 <main class="wrap">
   <h1>THE BROTHER</h1>
   <p class="sub">
-    A Leaving Cert points maximiser. Find the biggest leak first. Fix it. Move on.
+    A Leaving Cert study engine. Spot the biggest leak. Tighten the basics. Build the points picture over time.
   </p>
+
+  <section class="card" id="profileCard">
+    <div class="rowSplit profileTop">
+      <div>
+        <strong>Learner setup</strong>
+        <div class="tiny" id="profileSummary">First visit: enter a name and choose subjects.</div>
+      </div>
+      <div class="controls profileActions">
+        <button id="editSetupBtn" class="ghost" type="button">Edit setup</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card hidden" id="setupCard">
+    <h3 style="margin-top:0;">First visit setup</h3>
+    <div class="fieldBlock">
+      <label for="learnerNameInput"><strong>Name</strong></label>
+      <input id="learnerNameInput" type="text" placeholder="Enter learner name" />
+    </div>
+
+    <div class="fieldBlock" style="margin-top:16px;">
+      <strong>Choose subjects</strong>
+      <div class="tiny" style="margin-top:8px;">Nothing is preselected. Choose only the subjects being studied.</div>
+      <div id="subjectChecklist" class="checkGrid"></div>
+    </div>
+
+    <div class="controls">
+      <button id="saveSetupBtn" class="goldBtn" type="button">Save setup</button>
+      <button id="cancelSetupBtn" class="ghost" type="button">Cancel</button>
+    </div>
+  </section>
 
   <div class="menu twoColMenu">
     <button onclick="location.href='results.html'" class="menuBtn goldBtn">
@@ -30,11 +61,11 @@
       explains why it matters, and sends the student into a focused Gym block.
     </p>
     <p class="tiny" style="margin-top:10px;">
-      <strong>Practice Mode</strong> generates short authentic Leaving Cert style questions on the mechanics:
+      <strong>Practice Mode</strong> generates short authentic Leaving Cert style questions on mechanics:
       formulae, definitions, quotes, keywords, short structured responses, grammar, and other small bits that leak marks.
     </p>
     <p class="tiny" style="margin-top:10px;">
-      Practice scores are stored and fed into the running picture too, but with a lighter weight than full exam-result inputs.
+      Practice scores feed the running picture too, but with a lighter weight than full exam-result inputs.
     </p>
   </div>
 </main>
@@ -43,5 +74,7 @@
   © Synge Street Games Lab 2026
 </footer>
 
+<script src="subject-data.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

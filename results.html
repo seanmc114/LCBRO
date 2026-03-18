@@ -16,19 +16,11 @@
   </div>
 
   <h1>THE BROTHER</h1>
-  <p class="sub">
-    Hi Tom. All good? Choose a subject, paste the results, and I’ll identify the biggest points leak first.
+  <p class="sub" id="resultsIntro">
+    Choose a subject, paste results, and THE BROTHER will identify the biggest points leak first.
   </p>
 
-  <div class="subjectGrid">
-    <button class="subjectBtn english" data-subject="english_hl">English HL</button>
-    <button class="subjectBtn irish" data-subject="irish_hl">Irish HL</button>
-    <button class="subjectBtn maths" data-subject="maths_ol">Maths OL</button>
-    <button class="subjectBtn pe" data-subject="pe_hl">PE HL</button>
-    <button class="subjectBtn biology" data-subject="biology_hl">Biology HL</button>
-    <button class="subjectBtn homeec" data-subject="homeec_hl">Home Ec HL</button>
-    <button class="subjectBtn spanish" data-subject="spanish_ol">Spanish OL</button>
-  </div>
+  <div id="subjectGrid" class="subjectGrid"></div>
 
   <div class="card">
     <div class="rowSplit">
@@ -36,7 +28,7 @@
         <label for="questionTypeSelect"><strong>Optional topic / question type</strong></label>
         <select id="questionTypeSelect"></select>
         <div class="tiny" id="questionTypeHelp">
-          Optional. Use this only if you already know the weak question family. The coach still identifies the weakest area from the marks.
+          Optional. Use this only if you already know the weak question family.
         </div>
       </div>
 
@@ -51,11 +43,8 @@
 
   <div class="card">
     <strong>Example format</strong>
-    <div class="tiny" style="margin-top:8px;">
-      Paste one subject at a time. Use section names and scores like <strong>38/60</strong>.
-    </div>
+    <div class="tiny" style="margin-top:8px;">Paste one subject at a time. Use section names and scores like <strong>38/60</strong>.</div>
     <pre id="exampleBox" class="exampleBox"></pre>
-
     <div class="controls">
       <button id="useExampleBtn" class="tealBtn" type="button">Use Example</button>
       <button id="clearBtn" class="ghost" type="button">Clear</button>
@@ -65,7 +54,6 @@
   <div class="card">
     <strong>Your results</strong>
     <textarea id="resultsInput" placeholder="Choose a subject above first, then paste your results here."></textarea>
-
     <div class="controls">
       <button id="analyseBtn" class="goldBtn" type="button">Analyse Results</button>
     </div>
@@ -76,10 +64,9 @@
   <div id="caoPanel" class="card hidden">
     <h3 style="margin-top:0;">Projected CAO Points</h3>
     <div class="caoBig" id="caoTotal">—</div>
-    <div class="tiny" id="caoNote">Uses latest stored percentage for each subject on this device.</div>
+    <div class="tiny" id="caoNote">Uses latest stored percentage for each selected subject on this device.</div>
     <div id="caoBreakdown" class="resultBlock"></div>
   </div>
-
 
   <div class="card">
     <h3 style="margin-top:0;">Current picture</h3>
@@ -98,8 +85,8 @@
   © Synge Street Games Lab 2026
 </footer>
 
+<script src="subject-data.js"></script>
 <script src="ai.js"></script>
 <script src="results.js"></script>
-
 </body>
 </html>

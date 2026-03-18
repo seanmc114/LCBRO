@@ -271,3 +271,41 @@ canvas{
     text-align:left;
   }
 }
+
+input[type="text"]{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+  margin-top:8px;
+  box-sizing:border-box;
+}
+
+.checkGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+
+.checkItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,.08);
+  padding:12px 14px;
+  border-radius:12px;
+}
+
+.checkItem input{
+  transform:scale(1.2);
+}
+
+.profileTop{
+  align-items:center;
+}
+
+.profileActions{
+  justify-content:flex-end;
+}

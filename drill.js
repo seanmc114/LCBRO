@@ -153,16 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function niceSubject(s) {
-    const map = {
-      english_hl: "English HL",
-      irish_hl: "Irish HL",
-      maths_ol: "Maths OL",
-      pe_hl: "PE HL",
-      biology_hl: "Biology HL",
-      homeec_hl: "Home Ec HL",
-      spanish_ol: "Spanish OL"
-    };
-    return map[s] || s || "—";
+    return (window.getSubjectLabel ? window.getSubjectLabel(s) : s) || '—';
   }
 
   function escapeHtml(s) {

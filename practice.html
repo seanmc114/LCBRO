@@ -15,19 +15,11 @@
   </div>
 
   <h1>THE BROTHER</h1>
-  <p class="sub">
+  <p class="sub" id="practiceIntro">
     Short. Authentic. Marked fast. The mechanics first.
   </p>
 
-  <div class="subjectGrid">
-    <button class="subjectBtn english" data-subject="english_hl">English HL</button>
-    <button class="subjectBtn irish" data-subject="irish_hl">Irish HL</button>
-    <button class="subjectBtn maths" data-subject="maths_ol">Maths OL</button>
-    <button class="subjectBtn pe" data-subject="pe_hl">PE HL</button>
-    <button class="subjectBtn biology" data-subject="biology_hl">Biology HL</button>
-    <button class="subjectBtn homeec" data-subject="homeec_hl">Home Ec HL</button>
-    <button class="subjectBtn spanish" data-subject="spanish_ol">Spanish OL</button>
-  </div>
+  <div id="subjectGrid" class="subjectGrid"></div>
 
   <div class="card">
     <div class="rowSplit">
@@ -48,6 +40,12 @@
         </select>
         <div class="tiny">Standard is the default. Stretch adds a sharper twist.</div>
       </div>
+    </div>
+
+    <div class="fieldBlock" style="margin-top:16px;">
+      <label for="courseContextInput"><strong>Optional course context</strong></label>
+      <input id="courseContextInput" type="text" placeholder="e.g. Hamlet, Hécuba, enzymes, trigonometry, food studies" />
+      <div class="tiny">Useful for text names, poets, topics, chapters, or any current class focus.</div>
     </div>
 
     <div class="controls">
@@ -80,6 +78,7 @@
   © Synge Street Games Lab 2026
 </footer>
 
+<script src="subject-data.js"></script>
 <script src="ai.js"></script>
 <script src="practice.js"></script>
 
