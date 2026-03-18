@@ -160,7 +160,6 @@ Written Accuracy 12/20`
     questionTypeSelect.innerHTML = list
       .map(([value, label]) => `<option value="${value}">${label}</option>`)
       .join("");
-
     questionTypeHelp.textContent =
       "Optional. Use this only if you already know the weak question family. The coach still identifies the weakest area from the marks.";
   }
@@ -221,6 +220,7 @@ Written Accuracy 12/20`
 
       const drills = Array.isArray(result.drills) ? result.drills : [];
       const drillMeta = result.drill_meta || null;
+      const drillQueue = Array.isArray(result.drill_queue) ? result.drill_queue : (drillMeta ? [drillMeta] : []);
       const improvementLine = buildImprovementLine(currentSubject, raw);
 
       outEl.innerHTML = `
@@ -251,23 +251,15 @@ Written Accuracy 12/20`
           </ul>
         </div>
 
-        ${drillMeta ? `
+        ${drillQueue.length ? `
           <div class="resultBlock">
-            <strong>First drill task</strong><br>
-            ${escapeHtml(drillMeta.title)}<br><br>
-            ${escapeHtml(drillMeta.question)}
-          </div>
-        ` : ""}
-
-        ${result.next_data_request ? `
-          <div class="resultBlock">
-            <strong>Next thing I need from you</strong><br>
-            ${escapeHtml(result.next_data_request)}
+            <strong>Gym block</strong><br>
+            ${escapeHtml(drillQueue.length + " targeted drills ready.")}
           </div>
         ` : ""}
 
         <div class="controls" style="margin-top:16px;">
-          <button id="startDrillBtn" class="goldBtn" type="button">Start Drill</button>
+          <button id="startDrillBtn" class="goldBtn" type="button">Start Gym</button>
         </div>
       `;
 
@@ -277,6 +269,8 @@ Written Accuracy 12/20`
       localStorage.setItem("brother_biggest_leak", result.biggest_leak || "");
       localStorage.setItem("brother_drills", JSON.stringify(drills));
       localStorage.setItem("brother_drill_meta", JSON.stringify(drillMeta || null));
+      localStorage.setItem("brother_drill_queue", JSON.stringify(drillQueue));
+      localStorage.setItem("brother_drill_index", "0");
 
       const startBtn = document.getElementById("startDrillBtn");
       if (startBtn) {
@@ -285,7 +279,7 @@ Written Accuracy 12/20`
         });
       }
 
-      saveProgress(raw);
+      saveExamProgress(raw);
       drawGraph();
       if (showCao) drawCaoProjection();
     } catch (err) {
@@ -298,7 +292,7 @@ Written Accuracy 12/20`
     }
   });
 
-  function saveProgress(text) {
+  function saveExamProgress(text) {
     const percent = extractScore(text);
     if (percent === null || !currentSubject) return;
 
@@ -312,7 +306,8 @@ Written Accuracy 12/20`
 
     history[currentSubject].push({
       score: percent,
-      date: dateLabel
+      date: dateLabel,
+      source: "exam"
     });
 
     localStorage.setItem("lc_progress", JSON.stringify(history));
