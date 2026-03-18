@@ -11,61 +11,110 @@
 <main class="wrap">
   <h1>THE BROTHER</h1>
   <p class="sub">
-    A Leaving Cert study engine. Spot the biggest leak. Tighten the basics. Build the points picture over time.
+    A Leaving Cert points maximiser. Find the biggest leak first. Fix it. Move on.
   </p>
 
-  <section class="card" id="profileCard">
-    <div class="rowSplit profileTop">
-      <div>
-        <strong>Learner setup</strong>
-        <div class="tiny" id="profileSummary">First visit: enter a name and choose subjects.</div>
+  <div class="card">
+    <h2 style="margin-top:0;">Learner setup</h2>
+    <div class="rowSplit">
+      <div class="fieldBlock">
+        <label for="learnerName"><strong>Name</strong></label>
+        <input id="learnerName" class="textInput" type="text" placeholder="Enter learner name" />
       </div>
-      <div class="controls profileActions">
-        <button id="editSetupBtn" class="ghost" type="button">Edit setup</button>
+      <div class="fieldBlock">
+        <label><strong>Subjects</strong></label>
+        <div class="subjectGrid compact" id="setupSubjects">
+          <label class="subjectChoice english"><input type="checkbox" value="english_hl"> English HL</label>
+          <label class="subjectChoice irish"><input type="checkbox" value="irish_hl"> Irish HL</label>
+          <label class="subjectChoice maths"><input type="checkbox" value="maths_ol"> Maths OL</label>
+          <label class="subjectChoice pe"><input type="checkbox" value="pe_hl"> P.E. HL</label>
+          <label class="subjectChoice biology"><input type="checkbox" value="biology_hl"> Biology HL</label>
+          <label class="subjectChoice homeec"><input type="checkbox" value="homeec_hl"> Home Ec HL</label>
+          <label class="subjectChoice spanish"><input type="checkbox" value="spanish_ol"> Spanish OL</label>
+        </div>
       </div>
     </div>
-  </section>
 
-  <section class="card hidden" id="setupCard">
-    <h3 style="margin-top:0;">First visit setup</h3>
-    <div class="fieldBlock">
-      <label for="learnerNameInput"><strong>Name</strong></label>
-      <input id="learnerNameInput" type="text" placeholder="Enter learner name" />
+    <div class="card setupCard" style="margin-top:16px;">
+      <h3 style="margin-top:0;">English HL course setup</h3>
+      <p class="tiny">Set the option-based parts of the paper here so English practice can match the actual course.</p>
+      <div class="rowSplit">
+        <div class="fieldBlock">
+          <label for="engSingleText"><strong>Single text</strong></label>
+          <input id="engSingleText" class="textInput" type="text" placeholder="e.g. Hamlet" />
+        </div>
+        <div class="fieldBlock">
+          <label for="engPoets"><strong>Poets studied</strong></label>
+          <input id="engPoets" class="textInput" type="text" placeholder="Comma-separated names" />
+        </div>
+      </div>
+      <div class="rowSplit" style="margin-top:12px;">
+        <div class="fieldBlock">
+          <label for="engComp1"><strong>Comparative text 1</strong></label>
+          <input id="engComp1" class="textInput" type="text" placeholder="Title" />
+        </div>
+        <div class="fieldBlock">
+          <label for="engComp2"><strong>Comparative text 2</strong></label>
+          <input id="engComp2" class="textInput" type="text" placeholder="Title" />
+        </div>
+      </div>
+      <div class="rowSplit" style="margin-top:12px;">
+        <div class="fieldBlock">
+          <label for="engComp3"><strong>Comparative text 3</strong></label>
+          <input id="engComp3" class="textInput" type="text" placeholder="Title" />
+        </div>
+        <div class="fieldBlock">
+          <label for="engThemes"><strong>Optional focus</strong></label>
+          <input id="engThemes" class="textInput" type="text" placeholder="e.g. theme, character, motif" />
+        </div>
+      </div>
     </div>
 
-    <div class="fieldBlock" style="margin-top:16px;">
-      <strong>Choose subjects</strong>
-      <div class="tiny" style="margin-top:8px;">Nothing is preselected. Choose only the subjects being studied.</div>
-      <div id="subjectChecklist" class="checkGrid"></div>
+    <div class="card setupCard" style="margin-top:16px;">
+      <h3 style="margin-top:0;">Irish HL course setup</h3>
+      <p class="tiny">Set the option-based texts here so Irish practice can match the actual course.</p>
+      <div class="rowSplit">
+        <div class="fieldBlock">
+          <label for="irlPros"><strong>Prós</strong></label>
+          <input id="irlPros" class="textInput" type="text" placeholder="Title" />
+        </div>
+        <div class="fieldBlock">
+          <label for="irlDrama"><strong>Dráma</strong></label>
+          <input id="irlDrama" class="textInput" type="text" placeholder="Title" />
+        </div>
+      </div>
+      <div class="rowSplit" style="margin-top:12px;">
+        <div class="fieldBlock">
+          <label for="irlFiliocht"><strong>Filíocht</strong></label>
+          <input id="irlFiliocht" class="textInput" type="text" placeholder="Title or poet" />
+        </div>
+        <div class="fieldBlock">
+          <label for="irlFocus"><strong>Optional focus</strong></label>
+          <input id="irlFocus" class="textInput" type="text" placeholder="e.g. theme or character" />
+        </div>
+      </div>
     </div>
 
     <div class="controls">
-      <button id="saveSetupBtn" class="goldBtn" type="button">Save setup</button>
-      <button id="cancelSetupBtn" class="ghost" type="button">Cancel</button>
+      <button id="saveProfileBtn" class="goldBtn" type="button">Save learner setup</button>
     </div>
-  </section>
+    <div id="profileStatus" class="tiny" style="margin-top:10px;"></div>
+  </div>
 
-  <div class="menu twoColMenu">
+  <div class="menu">
     <button onclick="location.href='results.html'" class="menuBtn goldBtn">
       Results Coach
-    </button>
-    <button onclick="location.href='practice.html'" class="menuBtn tealBtn">
-      Practice Mode
     </button>
   </div>
 
   <div class="card">
     <strong>What this does</strong>
     <p class="tiny" style="margin-top:10px;">
-      <strong>Results Coach</strong> reads pasted exam or class-test results, identifies the biggest points leak,
-      explains why it matters, and sends the student into a focused Gym block.
+      Paste mock or class-test results section by section. THE BROTHER identifies the biggest points leak,
+      explains why it matters, recommends the first fix, and gives drills.
     </p>
     <p class="tiny" style="margin-top:10px;">
-      <strong>Practice Mode</strong> generates short authentic Leaving Cert style questions on mechanics:
-      formulae, definitions, quotes, keywords, short structured responses, grammar, and other small bits that leak marks.
-    </p>
-    <p class="tiny" style="margin-top:10px;">
-      Practice scores feed the running picture too, but with a lighter weight than full exam-result inputs.
+      For option-based subjects, save the actual course texts above. For fixed-paper subjects, the paper is the paper.
     </p>
   </div>
 </main>
@@ -74,7 +123,6 @@
   © Synge Street Games Lab 2026
 </footer>
 
-<script src="subject-data.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
