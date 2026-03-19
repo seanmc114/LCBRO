@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const learnerNameInput = document.getElementById('learnerNameInput');
   const subjectChecklist = document.getElementById('subjectChecklist');
   const editSetupBtn = document.getElementById('editSetupBtn');
+  const resetDataBtn = document.getElementById('resetDataBtn');
   const saveSetupBtn = document.getElementById('saveSetupBtn');
   const cancelSetupBtn = document.getElementById('cancelSetupBtn');
   const fields = {
@@ -24,8 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!profile.learnerName || !profile.selectedSubjects.length) openSetup();
   editSetupBtn?.addEventListener('click', openSetup);
   cancelSetupBtn?.addEventListener('click', () => { const p = window.getBrotherProfile(); if (p.learnerName || p.selectedSubjects.length) closeSetup(); });
+  resetDataBtn?.addEventListener('click', () => {
+    if (!confirm('Reset stored learner setup, practice history, results history and leak tracking on this device?')) return;
+    window.clearBrotherData();
+    window.location.reload();
+  });
   saveSetupBtn?.addEventListener('click', () => {
     const selectedSubjects = Array.from(subjectChecklist.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value);
+    if (!learnerNameInput.value.trim()) return alert('Enter a learner name first.');
+    if (!selectedSubjects.length) return alert('Choose at least one subject.');
     const next = {
       learnerName: learnerNameInput.value.trim(),
       selectedSubjects,
@@ -42,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         focus: fields.irlFocus.value.trim()
       }
     };
-    window.saveBrotherProfile(next); renderProfile(); closeSetup();
+    window.saveBrotherProfile(next);
+    renderProfile();
+    closeSetup();
   });
 
   function buildChecklist(){
@@ -62,13 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
     fields.irlDrama.value = p.irish?.drama || '';
     fields.irlFiliocht.value = p.irish?.filiocht || '';
     fields.irlFocus.value = p.irish?.focus || '';
-    const name = p.learnerName ? escapeHtml(p.learnerName) : 'No name saved yet';
+    const name = p.learnerName ? escapeHtml(p.learnerName) : 'No learner saved yet';
     const subjects = p.selectedSubjects?.length ? p.selectedSubjects.map(id => escapeHtml(window.getSubjectLabel(id))).join(', ') : 'No subjects chosen yet';
     const engSummary = buildCourseSummary('English', p.english?.singleText, p.english?.comparativeTexts, p.english?.poets);
     const irSummary = buildCourseSummary('Irish', p.irish?.pros, [p.irish?.drama, p.irish?.filiocht].filter(Boolean), []);
     profileSummary.innerHTML = `<strong>${name}</strong><br><span class="tiny">${subjects}</span>${engSummary || irSummary ? `<div class="tiny" style="margin-top:8px;">${engSummary}${engSummary && irSummary ? ' · ' : ''}${irSummary}</div>` : ''}`;
   }
-  function buildCourseSummary(label, first, others, extra){ const items = [first, ...(others || []), ...(extra || [])].filter(Boolean); return items.length ? `${escapeHtml(label)}: ${escapeHtml(items.join(', '))}` : ''; }
+  function buildCourseSummary(label, first, others, extra){
+    const items = [first, ...(others || []), ...(extra || [])].filter(Boolean);
+    return items.length ? `${escapeHtml(label)}: ${escapeHtml(items.join(', '))}` : '';
+  }
   function openSetup(){ setupCard.classList.remove('hidden'); setupCard.scrollIntoView({behavior:'smooth', block:'start'}); }
   function closeSetup(){ setupCard.classList.add('hidden'); }
 });

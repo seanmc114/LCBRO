@@ -1,4 +1,13 @@
 (function(){
+  const STORAGE = {
+    version: 'v3',
+    profile: 'brother_v3_profile',
+    attempts: 'brother_v3_attempts',
+    progress: 'brother_v3_progress',
+    leaks: 'brother_v3_leaks',
+    manualContexts: 'brother_v3_manual_contexts'
+  };
+
   const SUBJECTS = [
     { id:'accounting_hl', label:'Accounting HL', color:'#14B8A6' },
     { id:'accounting_ol', label:'Accounting OL', color:'#0F766E' },
@@ -84,15 +93,14 @@
     };
   }
 
-  function getBrotherProfile(){
-    try { return normalizeProfile(JSON.parse(localStorage.getItem('brother_profile') || 'null') || EMPTY_PROFILE); }
-    catch { return normalizeProfile(EMPTY_PROFILE); }
+  function loadJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback; }
+    catch { return fallback; }
   }
-  function saveBrotherProfile(profile){
-    const clean = normalizeProfile(profile);
-    localStorage.setItem('brother_profile', JSON.stringify(clean));
-    return clean;
-  }
+  function saveJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); return value; }
+
+  function getBrotherProfile(){ return normalizeProfile(loadJson(STORAGE.profile, EMPTY_PROFILE)); }
+  function saveBrotherProfile(profile){ return saveJson(STORAGE.profile, normalizeProfile(profile)); }
   function getSelectedSubjectIds(){ return getBrotherProfile().selectedSubjects; }
   function getSelectedSubjects(){
     const ids = getSelectedSubjectIds();
@@ -100,7 +108,11 @@
   }
   function getSubjectLabel(id){ return (SUBJECTS.find(s => s.id === id) || {}).label || id || '—'; }
   function getSubjectColor(id){ return (SUBJECTS.find(s => s.id === id) || {}).color || '#2fa39a'; }
+  function clearBrotherData(){
+    Object.values(STORAGE).forEach(v => { if (typeof v === 'string') localStorage.removeItem(v); });
+  }
 
+  window.BROTHER_STORAGE = STORAGE;
   window.BROTHER_SUBJECTS = SUBJECTS;
   window.getBrotherProfile = getBrotherProfile;
   window.saveBrotherProfile = saveBrotherProfile;
@@ -108,4 +120,7 @@
   window.getSelectedSubjects = getSelectedSubjects;
   window.getSubjectLabel = getSubjectLabel;
   window.getSubjectColor = getSubjectColor;
+  window.loadBrotherJson = loadJson;
+  window.saveBrotherJson = saveJson;
+  window.clearBrotherData = clearBrotherData;
 })();

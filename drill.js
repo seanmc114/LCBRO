@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function saveDrillAttempt(result) {
-    const attempts = JSON.parse(localStorage.getItem("lc_drill_attempts") || "[]");
+    const attempts = window.loadBrotherJson('brother_v3_drill_attempts', []);
     attempts.push({
       subject,
       questionType,
@@ -126,9 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
       fix: result.fix || "",
       date: new Date().toLocaleDateString("en-IE")
     });
-    localStorage.setItem("lc_drill_attempts", JSON.stringify(attempts));
+    window.saveBrotherJson('brother_v3_drill_attempts', attempts);
 
-    const leaks = JSON.parse(localStorage.getItem("lc_leaks") || "{}");
+    const leaks = window.loadBrotherJson(window.BROTHER_STORAGE.leaks, {});
     if (!Array.isArray(leaks[subject])) leaks[subject] = [];
     leaks[subject].push({
       date: new Date().toLocaleDateString("en-IE"),
@@ -136,11 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
       detail: result.main_issue || result.fix || focus || "Drill weakness",
       source: "gym"
     });
-    localStorage.setItem("lc_leaks", JSON.stringify(leaks));
+    window.saveBrotherJson(window.BROTHER_STORAGE.leaks, leaks);
   }
 
   function renderSummary() {
-    const attempts = JSON.parse(localStorage.getItem("lc_drill_attempts") || "[]").filter(x => x.subject === subject).slice(-5).reverse();
+    const attempts = window.loadBrotherJson('brother_v3_drill_attempts', []).filter(x => x.subject === subject).slice(-5).reverse();
     if (!attempts.length) {
       gymSummary.innerHTML = `<h3 style="margin-top:0;">Gym summary</h3><div class="tiny">No stored drill attempts yet.</div>`;
       return;

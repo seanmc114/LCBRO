@@ -16,9 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentPicture = document.getElementById('currentPicture');
 
   const profile = window.getBrotherProfile();
+  const resultsProfileName = document.getElementById('resultsProfileName');
+  const resultsProfileSummary = document.getElementById('resultsProfileSummary');
+  const editSetupResultsBtn = document.getElementById('editSetupResultsBtn');
+  const clearStoredHistoryBtn = document.getElementById('clearStoredHistoryBtn');
   if (profile.learnerName) {
     resultsIntro.textContent = `${profile.learnerName}, choose a subject, paste results, and THE BROTHER will identify the biggest points leak first.`;
+    resultsProfileName.textContent = profile.learnerName;
   }
+  resultsProfileSummary.textContent = profile.selectedSubjects?.length ? profile.selectedSubjects.map(id => window.getSubjectLabel(id)).join(', ') : 'Results are mainly for calibration. Practice remains the main engine.';
+  editSetupResultsBtn?.addEventListener('click', () => { window.location.href = 'index.html'; });
+  clearStoredHistoryBtn?.addEventListener('click', () => {
+    if (!confirm('Clear stored practice, results and leak history on this device?')) return;
+    window.saveBrotherJson(window.BROTHER_STORAGE.attempts, []);
+    window.saveBrotherJson(window.BROTHER_STORAGE.progress, {});
+    window.saveBrotherJson(window.BROTHER_STORAGE.leaks, {});
+    drawGraph();
+    drawCurrentPicture();
+    if (showCao) drawCaoProjection();
+  });
 
   const selectedSubjects = window.getSelectedSubjects();
   let currentSubject = selectedSubjects[0]?.id || window.BROTHER_SUBJECTS[0].id;
@@ -146,15 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (percent === null || !currentSubject) return;
     const now = new Date();
     const dateLabel = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}`;
-    const history = JSON.parse(localStorage.getItem('lc_progress') || '{}');
+    const history = window.loadBrotherJson(window.BROTHER_STORAGE.progress, {});
     if (!history[currentSubject]) history[currentSubject] = [];
     history[currentSubject].push({ score: percent, weighted_score: percent, date: dateLabel, source: 'exam' });
-    localStorage.setItem('lc_progress', JSON.stringify(history));
+    window.saveBrotherJson(window.BROTHER_STORAGE.progress, history);
 
-    const leaks = JSON.parse(localStorage.getItem('lc_leaks') || '{}');
+    const leaks = window.loadBrotherJson(window.BROTHER_STORAGE.leaks, {});
     if (!Array.isArray(leaks[currentSubject])) leaks[currentSubject] = [];
     leaks[currentSubject].push({ date: dateLabel, category: (result?.drill_meta?.leak_category) || questionType || 'general', detail: (result?.biggest_leak) || 'Biggest leak from exam input', source: 'exam' });
-    localStorage.setItem('lc_leaks', JSON.stringify(leaks));
+    window.saveBrotherJson(window.BROTHER_STORAGE.leaks, leaks);
   }
 
   function extractScore(text){
@@ -169,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function buildImprovementLine(subject, raw){
     const percent = extractScore(raw);
     if (percent === null) return '';
-    const history = JSON.parse(localStorage.getItem('lc_progress') || '{}');
+    const history = window.loadBrotherJson(window.BROTHER_STORAGE.progress, {});
     const prev = Array.isArray(history[subject]) && history[subject].length ? history[subject][history[subject].length - 1] : null;
     if (!prev) return '';
     if (percent > prev.score) return `${window.getSubjectLabel(subject)} improved ${prev.score}% → ${percent}%`;
@@ -178,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function drawGraph(){
     if (!chartCanvas || typeof Chart === 'undefined') return;
-    const data = JSON.parse(localStorage.getItem('lc_progress') || '{}');
+    const data = window.loadBrotherJson(window.BROTHER_STORAGE.progress, {});
     const allowed = new Set(selectedSubjects.map(s => s.id));
     const datasets = [];
     const labels = [];
@@ -193,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function drawCaoProjection(){
-    const history = JSON.parse(localStorage.getItem('lc_progress') || '{}');
+    const history = window.loadBrotherJson(window.BROTHER_STORAGE.progress, {});
     const latest = {};
     selectedSubjects.forEach(sub => {
       const arr = history[sub.id];
@@ -228,8 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function drawCurrentPicture(){
-    const progress = JSON.parse(localStorage.getItem('lc_progress') || '{}');
-    const leaks = JSON.parse(localStorage.getItem('lc_leaks') || '{}');
+    const progress = window.loadBrotherJson(window.BROTHER_STORAGE.progress, {});
+    const leaks = window.loadBrotherJson(window.BROTHER_STORAGE.leaks, {});
     const ids = selectedSubjects.map(s => s.id).filter(sub => Array.isArray(progress[sub]) && progress[sub].length);
     if (!ids.length) { currentPicture.innerHTML = `<div class="tiny">No stored picture yet. Practice will build this over time.</div>`; return; }
     currentPicture.innerHTML = ids.map(sub => {

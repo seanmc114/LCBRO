@@ -19,6 +19,19 @@
     Short. Authentic. Marked fast. The mechanics first.
   </p>
 
+  <section class="card compactCard">
+    <div class="rowSplit profileMini">
+      <div>
+        <strong id="practiceProfileName">Learner</strong>
+        <div class="tiny" id="practiceProfileSummary">Setup once, then straight into practice.</div>
+      </div>
+      <div class="controls profileActions">
+        <button id="editSetupPracticeBtn" class="ghost" type="button">Edit setup</button>
+        <button id="diagnosticBtn" class="ghost" type="button">Quick diagnostic</button>
+      </div>
+    </div>
+  </section>
+
   <div id="subjectGrid" class="subjectGrid"></div>
 
   <div class="card">
@@ -45,10 +58,12 @@
     <div class="fieldBlock" style="margin-top:16px;">
       <label for="courseContextInput"><strong>Optional course context</strong></label>
       <input id="courseContextInput" type="text" placeholder="e.g. Hamlet, Hécuba, enzymes, trigonometry, food studies" />
-      <div class="tiny">Useful for text names, poets, topics, chapters, or any current class focus.</div>
+      <div class="tiny" id="courseContextHelp">Useful for text names, poets, topics, chapters, or any current class focus.</div>
+      <div class="tiny" id="contextSavedNote" style="margin-top:6px;"></div>
     </div>
 
     <div class="controls">
+      <button id="saveContextBtn" class="ghost" type="button">Save context for this subject</button>
       <button id="generateBtn" class="goldBtn" type="button">Generate Question</button>
       <button id="newVariantBtn" class="ghost" type="button">New Variant</button>
     </div>
