@@ -50,7 +50,29 @@ document.addEventListener('DOMContentLoaded', () => {
     homeec_hl: [['definitions','Definitions / keywords'],['short_answers','Short answers'],['nutrition','Nutrition mechanics'],['application','Application sentence']],
     homeec_ol: [['definitions','Definitions / keywords'],['short_answers','Short answers'],['nutrition','Nutrition mechanics'],['application','Application sentence']],
     religious_education_hl: [['terms','Key terms / concepts'],['short_response','Short structured response'],['evidence','Evidence / example use'],['comparison','Compare / link sentence']],
-    religious_education_ol: [['terms','Key terms / concepts'],['short_response','Short structured response'],['evidence','Evidence / example use'],['comparison','Compare / link sentence']]
+    religious_education_ol: [['terms','Key terms / concepts'],['short_response','Short structured response'],['evidence','Evidence / example use'],['comparison','Compare / link sentence']],
+    applied_maths_hl: [['formulae','Formulae'],['short_method','Short method'],['interpretation','Interpretation'],['application','Application']],
+    physics_hl: [['definitions','Definitions'],['formulae','Formulae'],['experiments','Experiments / method'],['short_explain','Short explain']],
+    physics_ol: [['definitions','Definitions'],['formulae','Formulae'],['experiments','Experiments / method'],['short_explain','Short explain']],
+    chemistry_hl: [['definitions','Definitions'],['keywords','Keywords'],['experiments','Experiments / method'],['short_explain','Short explain']],
+    chemistry_ol: [['definitions','Definitions'],['keywords','Keywords'],['experiments','Experiments / method'],['short_explain','Short explain']],
+    art_hl: [['terms','Visual language'],['evidence','Artwork evidence'],['comparison','Comparison'],['short_response','Short response']],
+    art_ol: [['terms','Visual language'],['evidence','Artwork evidence'],['comparison','Comparison'],['short_response','Short response']],
+    economics_hl: [['definitions','Definitions'],['terms','Terms'],['application','Application'],['short_response','Short response']],
+    economics_ol: [['definitions','Definitions'],['terms','Terms'],['application','Application'],['short_response','Short response']],
+    business_hl: [['definitions','Definitions'],['terms','Terms'],['short_response','Short response'],['application','Application']],
+    business_ol: [['definitions','Definitions'],['terms','Terms'],['short_response','Short response'],['application','Application']],
+    accounting_hl: [['terms','Terms'],['short_method','Short method'],['interpretation','Interpretation'],['application','Application']],
+    accounting_ol: [['terms','Terms'],['short_method','Short method'],['interpretation','Interpretation'],['application','Application']],
+    german_hl: [['vocabulary','Vocabulary'],['grammar','Grammar'],['written_accuracy','Written accuracy'],['oral_mini','Short response']],
+    german_ol: [['vocabulary','Vocabulary'],['grammar','Grammar'],['written_accuracy','Written accuracy'],['oral_mini','Short response']],
+    french_hl: [['vocabulary','Vocabulary'],['grammar','Grammar'],['written_accuracy','Written accuracy'],['oral_mini','Short response']],
+    french_ol: [['vocabulary','Vocabulary'],['grammar','Grammar'],['written_accuracy','Written accuracy'],['oral_mini','Short response']],
+    computer_science_hl: [['definitions','Definitions'],['terms','Terms'],['application','Application'],['short_response','Short response']],
+    geography_hl: [['definitions','Definitions'],['terms','Terms'],['evidence','Evidence'],['comparison','Comparison']],
+    geography_ol: [['definitions','Definitions'],['terms','Terms'],['evidence','Evidence'],['comparison','Comparison']],
+    history_hl: [['terms','Terms'],['evidence','Evidence'],['comparison','Comparison'],['short_response','Short response']],
+    history_ol: [['terms','Terms'],['evidence','Evidence'],['comparison','Comparison'],['short_response','Short response']]
   };
 
   function genericAreas(subjectId) {
@@ -143,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAreas();
         setContextUI();
         renderHistory();
+        if (els.answer) els.answer.value = '';
         if (els.practiceCard) els.practiceCard.classList.add('hidden');
         if (els.answerCard) els.answerCard.classList.add('hidden');
         if (els.feedback) els.feedback.classList.add('hidden');
@@ -162,7 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
         b.textContent = label;
         b.addEventListener('click', () => {
           currentArea = value;
+          currentQuestion = null;
           if (els.typeSelect) els.typeSelect.value = value;
+          if (els.answer) els.answer.value = '';
+          if (els.practiceCard) els.practiceCard.classList.add('hidden');
+          if (els.answerCard) els.answerCard.classList.add('hidden');
+          if (els.feedback) els.feedback.classList.add('hidden');
           renderAreas();
         });
         els.areaButtons.appendChild(b);
@@ -254,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         diagnostic_mode: !!diagnosticMode
       };
       const q = await window.coachRequest(payload);
+      if (els.answer) els.answer.value = '';
       currentQuestion = {
         title: q.title || 'Mechanics quick hit',
         question: q.question || 'Answer one short exam-style question clearly and accurately.',
@@ -354,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setContextUI();
   renderHistory();
 
-  els.typeSelect?.addEventListener('change', () => { currentArea = els.typeSelect.value; renderAreas(); });
+  els.typeSelect?.addEventListener('change', () => { currentArea = els.typeSelect.value; currentQuestion = null; if (els.answer) els.answer.value = ''; if (els.practiceCard) els.practiceCard.classList.add('hidden'); if (els.answerCard) els.answerCard.classList.add('hidden'); if (els.feedback) els.feedback.classList.add('hidden'); renderAreas(); });
   els.saveContext?.addEventListener('click', saveContext);
   els.contextInput?.addEventListener('blur', saveContext);
   els.editSetup?.addEventListener('click', () => { window.location.href = 'index.html'; });
