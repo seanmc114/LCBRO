@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const practiceProfileSummary = document.getElementById('practiceProfileSummary');
   const practiceTypeSelect = document.getElementById('practiceTypeSelect');
   const practiceTypeHelp = document.getElementById('practiceTypeHelp');
+  const practiceAreaButtons = document.getElementById('practiceAreaButtons');
+  const practiceAreaCurrent = document.getElementById('practiceAreaCurrent');
   const difficultySelect = document.getElementById('difficultySelect');
   const courseContextInput = document.getElementById('courseContextInput');
   const saveContextBtn = document.getElementById('saveContextBtn');
@@ -89,6 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
   buildPracticeOptions(currentSubject);
   applyContextHint(currentSubject);
   renderHistory();
+
+  practiceTypeSelect?.addEventListener('change', syncPracticeAreaLabel);
 
   editSetupPracticeBtn?.addEventListener('click', () => { window.location.href = 'index.html'; });
   diagnosticBtn?.addEventListener('click', async () => {
@@ -195,10 +199,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function normalizeSubjectId(subject){
+    return String(subject || '').trim().toLowerCase();
+  }
+
+  function renderPracticeAreaButtons(opts){
+    if (!practiceAreaButtons) return;
+    practiceAreaButtons.innerHTML = opts.map(([v,l], i) => `\n      <button type="button" class="areaBtn${i===0 ? ' active' : ''}" data-value="${escapeHtml(v)}">${escapeHtml(l)}</button>\n    `).join('');
+    [...practiceAreaButtons.querySelectorAll('.areaBtn')].forEach(btn => {
+      btn.addEventListener('click', () => {
+        practiceTypeSelect.value = btn.dataset.value || 'general';
+        [...practiceAreaButtons.querySelectorAll('.areaBtn')].forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        syncPracticeAreaLabel();
+      });
+    });
+  }
+
+  function syncPracticeAreaLabel(){
+    const txt = practiceTypeSelect.options[practiceTypeSelect.selectedIndex]?.text || 'General mechanics';
+    if (practiceAreaCurrent) practiceAreaCurrent.textContent = `Current area: ${txt}`;
+    if (practiceAreaButtons) {
+      [...practiceAreaButtons.querySelectorAll('.areaBtn')].forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === practiceTypeSelect.value);
+      });
+    }
+  }
+
   function buildPracticeOptions(subject){
-    const opts = PRACTICE_TYPES[subject] || genericTypesForSubject(subject);
-    practiceTypeSelect.innerHTML = opts.map(([v,l]) => `<option value="${v}">${escapeHtml(l)}</option>`).join('');
-    practiceTypeHelp.textContent = 'Choose the paper section or skill area you want to practise. This is the day-to-day engine; results later confirm whether the picture is accurate.';
+    const normalized = normalizeSubjectId(subject);
+    const opts = PRACTICE_TYPES[normalized] || genericTypesForSubject(normalized) || [['general','General mechanics']];
+    const safeOpts = (Array.isArray(opts) && opts.length) ? opts : [['general','General mechanics']];
+    practiceTypeSelect.innerHTML = safeOpts.map(([v,l]) => `<option value="${escapeHtml(v)}">${escapeHtml(l)}</option>`).join('');
+    practiceTypeSelect.selectedIndex = 0;
+    practiceTypeSelect.style.color = '#143046';
+    renderPracticeAreaButtons(safeOpts);
+    syncPracticeAreaLabel();
+    practiceTypeHelp.textContent = 'Choose the paper section or skill area you want to practise. Click a button below if the dropdown is awkward on your browser.';
   }
 
   function getSavedCourseContext(subject){

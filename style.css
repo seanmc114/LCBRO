@@ -84,3 +84,8 @@ canvas{margin-top:14px;background:white;border-radius:12px;padding:10px;}
 }
 
 select:focus,input[type="text"]:focus,textarea:focus{outline:3px solid rgba(255,210,63,.45);}
+
+.areaButtons{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.areaBtn{background:rgba(255,255,255,.96);color:#143046;padding:10px 12px;border-radius:999px;border:none;font-size:14px;font-weight:800;}
+.areaBtn.active{background:var(--gold);color:#111;}
+#practiceAreaCurrent{margin-top:8px;font-weight:700;}
