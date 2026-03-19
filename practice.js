@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const practiceProfileName = document.getElementById('practiceProfileName');
   const practiceProfileSummary = document.getElementById('practiceProfileSummary');
   const practiceTypeSelect = document.getElementById('practiceTypeSelect');
+  practiceTypeSelect.size = 4;
   const practiceTypeHelp = document.getElementById('practiceTypeHelp');
   const practiceAreaButtons = document.getElementById('practiceAreaButtons');
   const practiceAreaCurrent = document.getElementById('practiceAreaCurrent');
@@ -89,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   buildSubjectButtons();
   buildPracticeOptions(currentSubject);
+  if (practiceAreaCurrent) practiceAreaCurrent.textContent = 'Current area: ' + (practiceTypeSelect.options[0]?.text || 'General mechanics');
   applyContextHint(currentSubject);
   renderHistory();
 
@@ -218,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function syncPracticeAreaLabel(){
     const txt = practiceTypeSelect.options[practiceTypeSelect.selectedIndex]?.text || 'General mechanics';
+    if (!practiceTypeSelect.value && practiceTypeSelect.options.length) practiceTypeSelect.value = practiceTypeSelect.options[0].value;
     if (practiceAreaCurrent) practiceAreaCurrent.textContent = `Current area: ${txt}`;
     if (practiceAreaButtons) {
       [...practiceAreaButtons.querySelectorAll('.areaBtn')].forEach(btn => {
@@ -235,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     practiceTypeSelect.style.color = '#143046';
     renderPracticeAreaButtons(safeOpts);
     syncPracticeAreaLabel();
-    practiceTypeHelp.textContent = 'Choose the paper section or skill area you want to practise. Click a button below if the dropdown is awkward on your browser.';
+    practiceTypeHelp.textContent = 'Choose one starting area. The buttons are the main control. The selector below mirrors your choice.';
   }
 
   function getSavedCourseContext(subject){
