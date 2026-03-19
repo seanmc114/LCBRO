@@ -52,6 +52,27 @@ document.addEventListener('DOMContentLoaded', () => {
     spanish_hl: [['grammar','Grammar / tense accuracy'],['vocabulary','Vocabulary / phrases'],['written_accuracy','Written accuracy'],['oral_mini','Short oral-style response']]
   };
 
+
+  const GENERIC_PRACTICE_TYPES = {
+    languages: [['vocabulary','Vocabulary / phrases'],['grammar','Grammar / accuracy'],['short_response','Short response'],['comprehension','Comprehension mechanics']],
+    sciences: [['definitions','Definitions / key terms'],['keywords','Keywords / labels'],['experiments','Method / experiment'],['short_explain','Short explain question']],
+    humanities: [['terms','Key terms / concepts'],['short_response','Short structured response'],['evidence','Evidence / example use'],['comparison','Compare / link sentence']],
+    businessish: [['definitions','Definitions / key terms'],['application','Application sentence'],['short_response','Short structured response'],['keywords','Keywords / concepts']],
+    practical: [['definitions','Definitions / key terms'],['application','Application / scenario'],['short_response','Short structured response'],['keywords','Keywords / concepts']],
+    maths: [['algebra','Algebra / manipulation'],['formulae','Formulae / substitution'],['short_method','Short method question'],['interpretation','Interpretation / reading the question']]
+  };
+
+  function genericTypesForSubject(subject){
+    if (!subject) return [['general','General mechanics']];
+    if (subject.includes('maths') || subject.includes('applied_maths') || subject.includes('dcg')) return GENERIC_PRACTICE_TYPES.maths;
+    if (['biology','chemistry','physics','agricultural_science'].some(x => subject.includes(x))) return GENERIC_PRACTICE_TYPES.sciences;
+    if (['english','irish','history','geography','classical_studies','religious_education','politics_society','ancient_greek'].some(x => subject.includes(x))) return GENERIC_PRACTICE_TYPES.humanities;
+    if (['spanish','french','german','arabic','japanese'].some(x => subject.includes(x))) return GENERIC_PRACTICE_TYPES.languages;
+    if (['business','economics','accounting'].some(x => subject.includes(x))) return GENERIC_PRACTICE_TYPES.businessish;
+    if (['homeec','pe','construction_studies','computer_science','music','art'].some(x => subject.includes(x))) return GENERIC_PRACTICE_TYPES.practical;
+    return [['general','General mechanics']];
+  }
+
   const CONTEXT_HINTS = {
     english_hl: { placeholder:'Uses saved text names automatically. Add a theme, character or comparative mode here if useful.', note:'Saved English texts are pulled in from setup. Add a sharper focus here only if needed.' },
     english_ol: { placeholder:'Add your studied text or current focus if useful.', note:'Saved English setup is pulled in automatically.' },
@@ -175,9 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildPracticeOptions(subject){
-    const opts = PRACTICE_TYPES[subject] || [['general','General mechanics']];
+    const opts = PRACTICE_TYPES[subject] || genericTypesForSubject(subject);
     practiceTypeSelect.innerHTML = opts.map(([v,l]) => `<option value="${v}">${escapeHtml(l)}</option>`).join('');
-    practiceTypeHelp.textContent = 'Choose the course area you want to practise. This is the day-to-day engine; results later confirm whether the picture is accurate.';
+    practiceTypeHelp.textContent = 'Choose the paper section or skill area you want to practise. This is the day-to-day engine; results later confirm whether the picture is accurate.';
   }
 
   function getSavedCourseContext(subject){
@@ -236,11 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
       contextSavedNote.textContent = `Using saved setup for this subject: ${saved}`;
       return;
     }
-    contextSavedNote.textContent = 'No saved context yet for this subject.';
+    contextSavedNote.textContent = 'No saved context yet for this subject. You can still generate practice now.';
   }
 
   function pickDiagnosticType(subject){
-    const opts = PRACTICE_TYPES[subject] || [['general','General mechanics']];
+    const opts = PRACTICE_TYPES[subject] || genericTypesForSubject(subject);
     const leaks = window.loadBrotherJson(window.BROTHER_STORAGE.leaks, {});
     const entries = Array.isArray(leaks[subject]) ? leaks[subject] : [];
     if (entries.length >= 2) {

@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const learnerNameInput = document.getElementById('learnerNameInput');
   const subjectChecklist = document.getElementById('subjectChecklist');
   const editSetupBtn = document.getElementById('editSetupBtn');
-  const resetDataBtn = document.getElementById('resetDataBtn');
   const saveSetupBtn = document.getElementById('saveSetupBtn');
   const cancelSetupBtn = document.getElementById('cancelSetupBtn');
   const fields = {
@@ -25,11 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!profile.learnerName || !profile.selectedSubjects.length) openSetup();
   editSetupBtn?.addEventListener('click', openSetup);
   cancelSetupBtn?.addEventListener('click', () => { const p = window.getBrotherProfile(); if (p.learnerName || p.selectedSubjects.length) closeSetup(); });
-  resetDataBtn?.addEventListener('click', () => {
-    if (!confirm('Reset stored learner setup, practice history, results history and leak tracking on this device?')) return;
-    window.clearBrotherData();
-    window.location.reload();
-  });
   saveSetupBtn?.addEventListener('click', () => {
     const selectedSubjects = Array.from(subjectChecklist.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value);
     if (!learnerNameInput.value.trim()) return alert('Enter a learner name first.');
